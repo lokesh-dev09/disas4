@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}Malaysia Disaster Risk Monitor - Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+        <h1 class="display-5 fw-bold mb-2">Disaster Risk Dashboard</h1>
+        <p class="lead">Real-time monitoring and predictive analysis of natural disasters in Malaysia.</p>
+    </div>
+    <div class="col-md-4 text-md-end">
+        <div class="badge bg-primary p-2 fs-6">Last Updated: {{ now().strftime('%d %b %Y, %H:%M') }}</div>
+    </div>
+</div>
+
+<!-- Key Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-4 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm stat-card bg-primary bg-opacity-10">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle me-3 p-3 bg-primary bg-opacity-25">
+                        <i data-feather="database" class="text-primary"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title">Total Disasters</h5>
+                        <h2 class="card-value">{{ total_disasters }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm stat-card bg-danger bg-opacity-10">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle me-3 p-3 bg-danger bg-opacity-25">
+                        <i data-feather="activity" class="text-danger"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title">Active Disasters</h5>
+                        <h2 class="card-value">{{ active_disasters }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-sm-6 mb-3">
+        <div class="card border-0 shadow-sm stat-card bg-warning bg-opacity-10">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-circle me-3 p-3 bg-warning bg-opacity-25">
+                        <i data-feather="alert-triangle" class="text-warning"></i>
+                    </div>
+                    <div>
+                        <h5 class="card-title">Active Alerts</h5>
+                        <h2 class="card-value">{{ alerts }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Charts -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-transparent border-0">
+                <h5 class="mb-0">
+                    <i data-feather="pie-chart" class="card-header-icon"></i>
+                    Disaster Analytics
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="chart-container">
+                            <canvas id="disasters-by-type-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="chart-container">
+                            <canvas id="risk-level-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="chart-container">
+                            <canvas id="disasters-by-month-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar with Recent Events and High Risk Areas -->
+    <div class="col-lg-4">
+        <!-- Recent Disasters -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-transparent border-0">
+                <h5 class="mb-0">
+                    <i data-feather="clock" class="card-header-icon"></i>
+                    Recent Disasters
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% for disaster in recent_disasters %}
+                    <div class="list-group-item bg-transparent">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ disaster.title }}</h6>
+                            <small class="badge risk-{{ disaster.severity }}">
+                                Level {{ disaster.severity }}
+                            </small>
+                        </div>
+                        <p class="mb-1 small">{{ disaster.type.name }} in {{ disaster.state.name }}</p>
+                        <small class="text-muted">{{ disaster.start_date.strftime('%d %b %Y') }}</small>
+                    </div>
+                    {% else %}
+                    <div class="list-group-item bg-transparent">
+                        <p class="mb-0 text-center">No recent disasters recorded.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer bg-transparent text-center">
+                <a href="{{ url_for('map_page') }}" class="btn btn-sm btn-outline-primary">View on Map</a>
+            </div>
+        </div>
+
+        <!-- High Risk Areas -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-transparent border-0">
+                <h5 class="mb-0">
+                    <i data-feather="alert-circle" class="card-header-icon"></i>
+                    High Risk Areas
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% for area in high_risk_areas %}
+                    <div class="list-group-item bg-transparent">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">{{ area.location_name }}</h6>
+                            <small class="badge risk-{{ area.risk_level }}">
+                                Level {{ area.risk_level }}
+                            </small>
+                        </div>
+                        <p class="mb-1 small">{{ DisasterType.query.get(area.disaster_type_id).name }} risk in {{ area.state.name }}</p>
+                        <small class="text-muted">Last assessed: {{ area.last_assessed.strftime('%d %b %Y') }}</small>
+                    </div>
+                    {% else %}
+                    <div class="list-group-item bg-transparent">
+                        <p class="mb-0 text-center">No high risk areas identified.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card-footer bg-transparent text-center">
+                <a href="{{ url_for('map_page') }}" class="btn btn-sm btn-outline-danger">View All Risk Zones</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Interactive Mini-Map Preview -->
+    <div class="col-12 mb-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-transparent border-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i data-feather="map-pin" class="card-header-icon"></i>
+                        Disaster Risk Map
+                    </h5>
+                    <a href="{{ url_for('map_page') }}" class="btn btn-sm btn-primary">
+                        Full Map View
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div id="map-container" style="height: 400px;"></div>
+                <div id="map-loading" class="position-absolute top-50 start-50 translate-middle d-none">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}Malaysia Disaster Risk Monitor{% endblock %}</title>
+    
+    <!-- Bootstrap CSS from Replit CDN -->
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    
+    <!-- Leaflet CSS for maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+    
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                <i data-feather="shield" class="me-2"></i>
+                <span>Malaysia Disaster Risk Monitor</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" 
+                           href="{{ url_for('index') }}">
+                            <i data-feather="home" class="feather-sm me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/map' %}active{% endif %}" 
+                           href="{{ url_for('map_page') }}">
+                            <i data-feather="map" class="feather-sm me-1"></i> Risk Map
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/alerts' %}active{% endif %}" 
+                           href="{{ url_for('alerts_page') }}">
+                            <i data-feather="alert-triangle" class="feather-sm me-1"></i> Alerts
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/about' %}active{% endif %}" 
+                           href="{{ url_for('about_page') }}">
+                            <i data-feather="info" class="feather-sm me-1"></i> About
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button id="refresh-data-btn" class="btn btn-outline-light btn-sm me-2">
+                        <i data-feather="refresh-cw" class="feather-sm me-1"></i> Refresh Data
+                    </button>
+                    <button id="theme-toggle" class="btn btn-outline-light btn-sm">
+                        <i data-feather="moon" class="feather-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Alert Area -->
+    <div id="alert-placeholder" class="container mt-3"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <h5 class="mb-3">Malaysia Disaster Risk Monitor</h5>
+                    <p class="mb-2">Advanced risk prediction and monitoring system utilizing machine learning to analyze historical patterns of natural disasters in Malaysia.</p>
+                    <p class="small text-muted">Data sources: NASA Earthdata, EM-DAT, WorldRiskReport</p>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{{ url_for('index') }}" class="text-decoration-none text-light">Dashboard</a></li>
+                        <li class="mb-2"><a href="{{ url_for('map_page') }}" class="text-decoration-none text-light">Risk Map</a></li>
+                        <li class="mb-2"><a href="{{ url_for('alerts_page') }}" class="text-decoration-none text-light">Disaster Alerts</a></li>
+                        <li class="mb-2"><a href="{{ url_for('about_page') }}" class="text-decoration-none text-light">About the Project</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3">Emergency Contacts</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><strong>Emergency:</strong> 999</li>
+                        <li class="mb-2"><strong>Civil Defense:</strong> 03-8888 9999</li>
+                        <li class="mb-2"><strong>Fire & Rescue:</strong> 994</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">© 2023 Malaysia Disaster Risk Monitor. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">Powered by ML & Deep Learning</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <!-- Leaflet JS for maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

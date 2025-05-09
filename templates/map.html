@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block title %}Malaysia Disaster Risk Map{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+        <h1 class="display-5 fw-bold mb-2">Disaster Risk Map</h1>
+        <p class="lead">Interactive visualization of disaster risk zones across Malaysia.</p>
+    </div>
+    <div class="col-md-4 text-md-end">
+        <div class="badge bg-primary p-2 fs-6">Last Updated: {{ now().strftime('%d %b %Y, %H:%M') }}</div>
+    </div>
+</div>
+
+<!-- Map Filters -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-transparent border-0">
+        <h5 class="mb-0">
+            <i data-feather="filter" class="card-header-icon"></i>
+            Map Filters
+        </h5>
+    </div>
+    <div class="card-body">
+        <form id="map-filter-form" class="row g-3">
+            <div class="col-md-3">
+                <label for="disaster-type-filter" class="form-label">Disaster Type</label>
+                <select id="disaster-type-filter" class="form-select map-filter">
+                    <option value="">All Types</option>
+                    {% for type in disaster_types %}
+                    <option value="{{ type.id }}" {% if selected_disaster_type == type.id %}selected{% endif %}>
+                        {{ type.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="state-filter" class="form-label">State</label>
+                <select id="state-filter" class="form-select map-filter">
+                    <option value="">All States</option>
+                    {% for state in states %}
+                    <option value="{{ state.id }}" {% if selected_state == state.id %}selected{% endif %}>
+                        {{ state.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="min-risk-filter" class="form-label">Minimum Risk Level</label>
+                <select id="min-risk-filter" class="form-select map-filter">
+                    <option value="1">All Levels</option>
+                    <option value="2">Level 2+</option>
+                    <option value="3">Level 3+</option>
+                    <option value="4">Level 4+</option>
+                    <option value="5">Level 5 Only</option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <div class="form-check form-switch">
+                    <input class="form-check-input map-filter" type="checkbox" id="active-only-filter">
+                    <label class="form-check-label" for="active-only-filter">Active Disasters Only</label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Map Display and Legend -->
+<div class="row">
+    <div class="col-md-9">
+        <!-- Map Container -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-0">
+                <div id="map-container"></div>
+                <div id="map-loading" class="position-absolute top-50 start-50 translate-middle d-none">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <!-- Map Controls -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-transparent border-0">
+                <h5 class="mb-0">
+                    <i data-feather="layers" class="card-header-icon"></i>
+                    Map Layers
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="toggle-disasters" checked>
+                    <label class="form-check-label" for="toggle-disasters">
+                        Show Disaster Events
+                    </label>
+                </div>
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="toggle-risk-zones" checked>
+                    <label class="form-check-label" for="toggle-risk-zones">
+                        Show Risk Zones
+                    </label>
+                </div>
+                
+                <hr>
+                
+                <h6 class="mb-3">Risk Level Guide</h6>
+                
+                <div class="d-flex align-items-center mb-2">
+                    <div class="me-2" style="width: 20px; height: 20px; background-color: #28a745; border-radius: 3px;"></div>
+                    <span>Level 1: Very Low Risk</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="me-2" style="width: 20px; height: 20px; background-color: #5cb85c; border-radius: 3px;"></div>
+                    <span>Level 2: Low Risk</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="me-2" style="width: 20px; height: 20px; background-color: #ffc107; border-radius: 3px;"></div>
+                    <span>Level 3: Moderate Risk</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="me-2" style="width: 20px; height: 20px; background-color: #dc3545; border-radius: 3px;"></div>
+                    <span>Level 4: High Risk</span>
+                </div>
+                <div class="d-flex align-items-center mb-2">
+                    <div class="me-2" style="width: 20px; height: 20px; background-color: #000000; border-radius: 3px;"></div>
+                    <span>Level 5: Life-Threatening</span>
+                </div>
+                
+                <hr>
+                
+                <h6 class="mb-3">Criteria for Level 5 (Black)</h6>
+                <ul class="small">
+                    <li>Earthquake: Magnitude > 6.0</li>
+                    <li>Tsunami: Inundation depth > 101cm</li>
+                    <li>Flood: Severe, affecting >50,000 people</li>
+                    <li>Forest Fire: >1,000 hectares affected</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Risk Assessment Information -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-transparent border-0">
+        <h5 class="mb-0">
+            <i data-feather="info" class="card-header-icon"></i>
+            About Risk Assessment
+        </h5>
+    </div>
+    <div class="card-body">
+        <p>This map displays both historical disaster events and predicted risk zones across Malaysia. The risk assessment is based on:</p>
+        
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <div class="card bg-dark mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i data-feather="database" class="me-2"></i>
+                            Historical Data Analysis
+                        </h6>
+                        <ul class="mb-0">
+                            <li>Past disaster frequency and severity</li>
+                            <li>Geographic distribution patterns</li>
+                            <li>Seasonal and climate trends</li>
+                            <li>Impact assessment and recovery data</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i data-feather="cpu" class="me-2"></i>
+                            Predictive ML Algorithms
+                        </h6>
+                        <ul class="mb-0">
+                            <li>Deep learning pattern recognition</li>
+                            <li>Real-time meteorological data</li>
+                            <li>Satellite imagery analysis</li>
+                            <li>Multi-variable risk factor correlation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <p class="mt-3">Our machine learning model continuously improves as new data becomes available, providing increasingly accurate predictions over time.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+{% endblock %}

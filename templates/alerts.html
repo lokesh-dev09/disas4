@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+
+{% block title %}Disaster Alerts - Malaysia Disaster Risk Monitor{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col-md-8">
+        <h1 class="display-5 fw-bold mb-2">Disaster Alerts</h1>
+        <p class="lead">Current and past disaster alerts across Malaysia.</p>
+    </div>
+    <div class="col-md-4 text-md-end">
+        <div class="badge bg-primary p-2 fs-6">Last Updated: {{ now().strftime('%d %b %Y, %H:%M') }}</div>
+    </div>
+</div>
+
+<!-- Alert Filters -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-transparent border-0">
+        <h5 class="mb-0">
+            <i data-feather="filter" class="card-header-icon"></i>
+            Filter Alerts
+        </h5>
+    </div>
+    <div class="card-body">
+        <form id="alert-filter-form" class="row g-3">
+            <div class="col-md-4">
+                <label for="disaster-type-filter" class="form-label">Disaster Type</label>
+                <select id="disaster-type-filter" class="form-select">
+                    <option value="">All Types</option>
+                    {% for type in disaster_types %}
+                    <option value="{{ type.id }}" {% if selected_disaster_type == type.id %}selected{% endif %}>
+                        {{ type.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="state-filter" class="form-label">State</label>
+                <select id="state-filter" class="form-select">
+                    <option value="">All States</option>
+                    {% for state in states %}
+                    <option value="{{ state.id }}" {% if selected_state == state.id %}selected{% endif %}>
+                        {{ state.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="active-only-filter" {% if active_only %}checked{% endif %}>
+                    <label class="form-check-label" for="active-only-filter">Active Alerts Only</label>
+                </div>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Alerts Display -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-transparent border-0">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i data-feather="alert-triangle" class="card-header-icon"></i>
+                        Disaster Alerts
+                    </h5>
+                    <span class="badge bg-primary">{{ alerts|length }} alerts found</span>
+                </div>
+            </div>
+            <div class="card-body">
+                {% if alerts %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">Alert Level</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Disaster Type</th>
+                                <th scope="col">Location</th>
+                                <th scope="col">Issued</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for alert in alerts %}
+                            <tr>
+                                <td>
+                                    <span class="badge risk-{{ alert.alert_level }}">Level {{ alert.alert_level }}</span>
+                                </td>
+                                <td>{{ alert.title }}</td>
+                                <td>{{ alert.disaster.type.name }}</td>
+                                <td>{{ alert.disaster.state.name }}</td>
+                                <td>{{ alert.issued_at.strftime('%d %b %Y') }}</td>
+                                <td>
+                                    {% if alert.is_active %}
+                                    <span class="badge bg-danger">Active</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary">Expired</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-info" 
+                                            data-bs-toggle="modal" 
+                                            data-bs-target="#alertModal{{ alert.id }}">
+                                        <i data-feather="eye" class="feather-sm"></i>
+                                        Details
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info mb-0">
+                    <i data-feather="info" class="me-2"></i>
+                    No alerts found matching your criteria. Try adjusting your filters.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Alert Modals -->
+{% for alert in alerts %}
+<div class="modal fade" id="alertModal{{ alert.id }}" tabindex="-1" aria-labelledby="alertModalLabel{{ alert.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertModalLabel{{ alert.id }}">Alert Details: {{ alert.title }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h6>Alert Information</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-transparent">
+                                <strong>Alert Level:</strong> 
+                                <span class="badge risk-{{ alert.alert_level }}">Level {{ alert.alert_level }}</span>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <strong>Issued On:</strong> {{ alert.issued_at.strftime('%d %b %Y, %H:%M') }}
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <strong>Expires On:</strong> 
+                                {% if alert.expires_at %}
+                                    {{ alert.expires_at.strftime('%d %b %Y, %H:%M') }}
+                                {% else %}
+                                    Until further notice
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <strong>Status:</strong> 
+                                {% if alert.is_active %}
+                                    <span class="badge bg-danger">Active</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Expired</span>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Disaster Information</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item bg-transparent">
+                                <strong>Disaster Type:</strong> {{ alert.disaster.type.name }}
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <strong>Location:</strong> {{ alert.disaster.state.name }}
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <strong>Start Date:</strong> {{ alert.disaster.start_date.strftime('%d %b %Y') }}
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <strong>Severity:</strong> 
+                                <span class="badge risk-{{ alert.disaster.severity }}">Level {{ alert.disaster.severity }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="alert alert-secondary mb-4">
+                    <h6 class="alert-heading">Alert Message:</h6>
+                    <p class="mb-0">{{ alert.message }}</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12">
+                        <div id="alert-map-{{ alert.id }}" style="height: 250px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <a href="{{ url_for('map_page') }}?disaster_type={{ alert.disaster.disaster_type_id }}&state={{ alert.disaster.state_id }}" 
+                   class="btn btn-primary">
+                    <i data-feather="map" class="feather-sm me-1"></i>
+                    View on Full Map
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the modal map when it's shown
+        const alertModal{{ alert.id }} = document.getElementById('alertModal{{ alert.id }}')
+        alertModal{{ alert.id }}.addEventListener('shown.bs.modal', function () {
+            const map = L.map('alert-map-{{ alert.id }}').setView([{{ alert.disaster.latitude }}, {{ alert.disaster.longitude }}], 10);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            
+            // Add marker for the disaster
+            const marker = L.marker([{{ alert.disaster.latitude }}, {{ alert.disaster.longitude }}])
+                .addTo(map)
+                .bindPopup("{{ alert.disaster.title }}")
+                .openPopup();
+            
+            // Add circle for the affected area
+            L.circle([{{ alert.disaster.latitude }}, {{ alert.disaster.longitude }}], {
+                color: '{{ "#dc3545" if alert.is_active else "#6c757d" }}',
+                fillColor: '{{ "#dc3545" if alert.is_active else "#6c757d" }}',
+                fillOpacity: 0.2,
+                radius: 10000
+            }).addTo(map);
+        });
+    });
+</script>
+{% endfor %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize all Feather icons in modals too
+        if (typeof feather !== 'undefined') {
+            feather.replace();
+        }
+    });
+</script>
+{% endblock %}

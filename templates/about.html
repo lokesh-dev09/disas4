@@ -1,0 +1,362 @@
+{% extends 'base.html' %}
+
+{% block title %}About - Malaysia Disaster Risk Monitor{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-5 fw-bold mb-2">About the Project</h1>
+        <p class="lead">Understanding the technology behind Malaysia's disaster risk prediction and monitoring system.</p>
+    </div>
+</div>
+
+<!-- Project Overview -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-transparent border-0">
+        <h5 class="mb-0">
+            <i data-feather="info" class="card-header-icon"></i>
+            Project Overview
+        </h5>
+    </div>
+    <div class="card-body">
+        <p>The Malaysia Disaster Risk Monitor is an advanced platform that leverages machine learning and data science to analyze historical patterns of natural disasters in Malaysia, specifically focusing on floods, earthquakes, tsunamis, and forest fires.</p>
+        
+        <p>Our system compiles and analyzes data from authoritative sources like NASA Earthdata, EM-DAT: The International Disaster Database, and the WorldRiskReport, combining this with real-time satellite imagery to identify both current risk areas and predict future high-risk zones.</p>
+        
+        <div class="row mt-4">
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i data-feather="target" class="me-2 text-primary"></i>
+                            Our Mission
+                        </h5>
+                        <p class="card-text">To provide accurate, timely, and accessible disaster risk information to help communities, government agencies, and relief organizations better prepare for and respond to natural disasters in Malaysia.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <i data-feather="eye" class="me-2 text-primary"></i>
+                            Our Vision
+                        </h5>
+                        <p class="card-text">To reduce the impact of natural disasters through advanced prediction and early warning systems, ultimately saving lives and minimizing economic losses across Malaysia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Technology Stack -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-transparent border-0">
+        <h5 class="mb-0">
+            <i data-feather="layers" class="card-header-icon"></i>
+            Technology Stack
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <h6 class="section-header">Backend Technologies</h6>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item bg-transparent d-flex align-items-center">
+                        <i data-feather="code" class="me-3 text-primary"></i>
+                        <div>
+                            <strong>Flask Framework</strong>
+                            <p class="mb-0 small">Python web framework for serving our application</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent d-flex align-items-center">
+                        <i data-feather="database" class="me-3 text-primary"></i>
+                        <div>
+                            <strong>SQLAlchemy ORM</strong>
+                            <p class="mb-0 small">Database management and data persistence</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent d-flex align-items-center">
+                        <i data-feather="cpu" class="me-3 text-primary"></i>
+                        <div>
+                            <strong>scikit-learn</strong>
+                            <p class="mb-0 small">Machine learning library for predictive models</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent d-flex align-items-center">
+                        <i data-feather="server" class="me-3 text-primary"></i>
+                        <div>
+                            <strong>TensorFlow</strong>
+                            <p class="mb-0 small">Deep learning for complex pattern recognition</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent d-flex align-items-center">
+                        <i data-feather="bar-chart-2" class="me-3 text-primary"></i>
+                        <div>
+                            <strong>NumPy & Pandas</strong>
+                            <p class="mb-0 small">Data manipulation and analysis</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h6 class="section-header">Frontend Technologies</h6>
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item bg-transparent d-flex align-items-center">
+                        <i data-feather="layout" class="me-3 text-primary"></i>
+                        <div>
+                            <strong>Bootstrap 5</strong>
+                            <p class="mb-0 small">Responsive design framework</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent d-flex align-items-center">
+                        <i data-feather="map" class="me-3 text-primary"></i>
+                        <div>
+                            <strong>Leaflet.js</strong>
+                            <p class="mb-0 small">Interactive map visualization</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent d-flex align-items-center">
+                        <i data-feather="pie-chart" class="me-3 text-primary"></i>
+                        <div>
+                            <strong>Chart.js</strong>
+                            <p class="mb-0 small">Data visualization and analytics</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent d-flex align-items-center">
+                        <i data-feather="code" class="me-3 text-primary"></i>
+                        <div>
+                            <strong>Vanilla JavaScript</strong>
+                            <p class="mb-0 small">Interactive user interface components</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item bg-transparent d-flex align-items-center">
+                        <i data-feather="refresh-cw" class="me-3 text-primary"></i>
+                        <div>
+                            <strong>Fetch API</strong>
+                            <p class="mb-0 small">Asynchronous data retrieval</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Risk Assessment Methodology -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-transparent border-0">
+        <h5 class="mb-0">
+            <i data-feather="activity" class="card-header-icon"></i>
+            Risk Assessment Methodology
+        </h5>
+    </div>
+    <div class="card-body">
+        <p>Our risk assessment methodology combines historical data analysis with machine learning algorithms to identify patterns and predict future disaster risks. The system assigns risk levels from 1 (very low risk) to 5 (life-threatening) based on various factors specific to each disaster type.</p>
+        
+        <div class="table-responsive mt-3">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Risk Level</th>
+                        <th>Color Code</th>
+                        <th>Description</th>
+                        <th>Example Criteria</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Level 1</td>
+                        <td><span class="badge risk-1">Green</span></td>
+                        <td>Very Low Risk</td>
+                        <td>Minimal historical incidents, favorable conditions</td>
+                    </tr>
+                    <tr>
+                        <td>Level 2</td>
+                        <td><span class="badge risk-2">Light Green</span></td>
+                        <td>Low Risk</td>
+                        <td>Few historical incidents, generally safe conditions</td>
+                    </tr>
+                    <tr>
+                        <td>Level 3</td>
+                        <td><span class="badge risk-3">Yellow</span></td>
+                        <td>Moderate Risk</td>
+                        <td>Occasional incidents, some risk factors present</td>
+                    </tr>
+                    <tr>
+                        <td>Level 4</td>
+                        <td><span class="badge risk-4">Red</span></td>
+                        <td>High Risk</td>
+                        <td>Frequent incidents, multiple risk factors</td>
+                    </tr>
+                    <tr>
+                        <td>Level 5</td>
+                        <td><span class="badge risk-5">Black</span></td>
+                        <td>Life-Threatening</td>
+                        <td>Earthquake > 6.0 magnitude, Tsunami depth > 101cm</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <h6 class="mt-4 mb-3">Disaster-Specific Criteria</h6>
+        
+        <div class="row">
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i data-feather="droplet" class="me-2"></i>
+                            Floods
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li><strong>Level 3:</strong> Affecting 5,000-10,000 people</li>
+                            <li><strong>Level 4:</strong> Affecting 10,001-50,000 people</li>
+                            <li><strong>Level 5:</strong> Affecting >50,000 people or depth >3m</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i data-feather="activity" class="me-2"></i>
+                            Earthquakes
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li><strong>Level 3:</strong> Magnitude 4.0-4.9</li>
+                            <li><strong>Level 4:</strong> Magnitude 5.0-5.9</li>
+                            <li><strong>Level 5:</strong> Magnitude >6.0</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i data-feather="wind" class="me-2"></i>
+                            Tsunamis
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li><strong>Level 3:</strong> Inundation depth 31-60cm</li>
+                            <li><strong>Level 4:</strong> Inundation depth 61-100cm</li>
+                            <li><strong>Level 5:</strong> Inundation depth >101cm</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i data-feather="wind" class="me-2"></i>
+                            Forest Fires
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li><strong>Level 3:</strong> 100-300 hectares affected</li>
+                            <li><strong>Level 4:</strong> 301-1,000 hectares affected</li>
+                            <li><strong>Level 5:</strong> >1,000 hectares affected</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Data Sources -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-transparent border-0">
+        <h5 class="mb-0">
+            <i data-feather="database" class="card-header-icon"></i>
+            Data Sources
+        </h5>
+    </div>
+    <div class="card-body">
+        <p>Our system integrates data from multiple authoritative sources to ensure accurate and comprehensive disaster risk assessment:</p>
+        
+        <div class="row mt-3">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body">
+                        <h5 class="card-title">NASA Earthdata</h5>
+                        <p class="card-text">Real-time and historical satellite data on natural hazards, including flood mapping, fire detection, and earthquake impacts.</p>
+                        <a href="https://earthdata.nasa.gov/" target="_blank" class="btn btn-sm btn-outline-primary">Visit Source</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body">
+                        <h5 class="card-title">EM-DAT Database</h5>
+                        <p class="card-text">The International Disaster Database containing systematic data on the occurrence and effects of disasters worldwide since 1900.</p>
+                        <a href="https://www.emdat.be/" target="_blank" class="btn btn-sm btn-outline-primary">Visit Source</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100 bg-dark">
+                    <div class="card-body">
+                        <h5 class="card-title">WorldRiskReport</h5>
+                        <p class="card-text">Analysis of disaster risk, vulnerability and coping capacities by country, with detailed risk assessments and rankings.</p>
+                        <a href="https://weltrisikobericht.de/english/" target="_blank" class="btn btn-sm btn-outline-primary">Visit Source</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <p class="mt-3">These data sources are supplemented with local meteorological information and historical records specific to Malaysia to enhance the accuracy of our predictions.</p>
+    </div>
+</div>
+
+<!-- Contact Information -->
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-transparent border-0">
+        <h5 class="mb-0">
+            <i data-feather="mail" class="card-header-icon"></i>
+            Contact Information
+        </h5>
+    </div>
+    <div class="card-body">
+        <p>For more information about this project, data partnerships, or to report issues, please contact us:</p>
+        
+        <div class="row mt-3">
+            <div class="col-md-6 mb-3">
+                <div class="card bg-dark">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i data-feather="help-circle" class="me-2 text-primary"></i>
+                            Technical Support
+                        </h6>
+                        <p class="card-text mb-1"><strong>Email:</strong> support@malaysiadisastermonitor.org</p>
+                        <p class="card-text"><strong>Phone:</strong> +60 3-XXXX-XXXX</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card bg-dark">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <i data-feather="users" class="me-2 text-primary"></i>
+                            Partnerships & Data Collaboration
+                        </h6>
+                        <p class="card-text mb-1"><strong>Email:</strong> partnerships@malaysiadisastermonitor.org</p>
+                        <p class="card-text"><strong>Phone:</strong> +60 3-XXXX-XXXX</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
