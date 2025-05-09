@@ -47,6 +47,26 @@ def initialize_reference_data():
         
         # Add sample disasters if none exist
         if Disaster.query.count() == 0:
+            # Malaysian state coordinates (approximate centers)
+            state_coordinates = {
+                "Johor": (1.8541, 103.7377),
+                "Kedah": (6.1184, 100.3685),
+                "Kelantan": (5.3837, 102.0292),
+                "Melaka": (2.1896, 102.2501),
+                "Negeri Sembilan": (2.7258, 102.2377),
+                "Pahang": (3.8126, 103.3256),
+                "Perak": (4.5921, 101.0901),
+                "Perlis": (6.4449, 100.2059),
+                "Penang": (5.4141, 100.3288),
+                "Sabah": (5.9804, 116.0735),
+                "Sarawak": (1.5533, 110.3592),
+                "Selangor": (3.0738, 101.5183),
+                "Terengganu": (5.3117, 103.1324),
+                "Kuala Lumpur": (3.1390, 101.6869),
+                "Labuan": (5.2831, 115.2308),
+                "Putrajaya": (2.9264, 101.6964)
+            }
+            
             # Sample disasters for demonstration
             sample_disasters = [
                 {
@@ -59,8 +79,8 @@ def initialize_reference_data():
                     "is_active": False,
                     "area_affected": 120.5,
                     "severity": 4,
-                    "latitude": 5.3102,
-                    "longitude": 101.7434,
+                    "latitude": 5.3837,
+                    "longitude": 102.0292,
                     "source": "Sample Data"
                 },
                 {
@@ -73,8 +93,8 @@ def initialize_reference_data():
                     "is_active": False,
                     "area_affected": 85.2,
                     "severity": 3,
-                    "latitude": 5.3307,
-                    "longitude": 103.1408,
+                    "latitude": 5.3117, 
+                    "longitude": 103.1324,
                     "source": "Sample Data"
                 },
                 {
@@ -87,8 +107,8 @@ def initialize_reference_data():
                     "is_active": False,
                     "magnitude": 5.9,
                     "severity": 4,
-                    "latitude": 6.0356,
-                    "longitude": 116.5486,
+                    "latitude": 5.9804,
+                    "longitude": 116.0735,
                     "source": "Sample Data"
                 },
                 {
@@ -100,8 +120,8 @@ def initialize_reference_data():
                     "is_active": True,
                     "area_affected": 250.8,
                     "severity": 4,
-                    "latitude": 2.8210,
-                    "longitude": 101.5493,
+                    "latitude": 3.0738,
+                    "longitude": 101.5183,
                     "source": "Sample Data"
                 },
                 {
@@ -157,6 +177,26 @@ def initialize_reference_data():
         
         # Create some risk assessments if none exist
         if RiskAssessment.query.count() == 0:
+            # Malaysian state coordinates (approximate centers)
+            state_coordinates = {
+                "Johor": (1.8541, 103.7377),
+                "Kedah": (6.1184, 100.3685),
+                "Kelantan": (5.3837, 102.0292),
+                "Melaka": (2.1896, 102.2501),
+                "Negeri Sembilan": (2.7258, 102.2377),
+                "Pahang": (3.8126, 103.3256),
+                "Perak": (4.5921, 101.0901),
+                "Perlis": (6.4449, 100.2059),
+                "Penang": (5.4141, 100.3288),
+                "Sabah": (5.9804, 116.0735),
+                "Sarawak": (1.5533, 110.3592),
+                "Selangor": (3.0738, 101.5183),
+                "Terengganu": (5.3117, 103.1324),
+                "Kuala Lumpur": (3.1390, 101.6869),
+                "Labuan": (5.2831, 115.2308),
+                "Putrajaya": (2.9264, 101.6964)
+            }
+            
             # Generate risk assessments for each state and disaster type
             for state_name, state in state_map.items():
                 for disaster_type_name, disaster_type in disaster_type_map.items():
@@ -169,10 +209,8 @@ def initialize_reference_data():
                        (state_name == "Penang" and disaster_type_name == "Tsunami"):
                         risk_level = 5
                     
-                    # Get coordinates for the state (simplified for demo)
-                    # In a real app, you would use actual geographical data
-                    latitude = 4.0 + (hash(state_name) % 10) * 0.3  # Simple variation
-                    longitude = 102.0 + (hash(state_name) % 14) * 0.5  # Simple variation
+                    # Get accurate coordinates for the state
+                    latitude, longitude = state_coordinates.get(state_name, (4.0, 102.0))
                     
                     assessment = RiskAssessment(
                         state_id=state.id,
