@@ -255,6 +255,40 @@ def fetch_nasa_earthdata():
         logger.error(f"Error fetching NASA Earthdata: {str(e)}")
         return False
 
+# Function to fetch satellite imagery from NASA Earth Imagery API
+def fetch_nasa_earth_imagery(lat, lon, date=None):
+    try:
+        logger.info(f"Fetching NASA Earth imagery for coordinates: {lat}, {lon}")
+        
+        # Use NASA Earth Imagery API
+        api_key = os.environ.get("NASA_API_KEY", "jKNRIKd0ux1PWIocyYhwf6W4ghnVvxzNvSde95di")
+        
+        # Set default date to today if none provided
+        if date is None:
+            date = datetime.utcnow().strftime('%Y-%m-%d')
+        
+        # Format the API URL
+        url = f"https://api.nasa.gov/planetary/earth/imagery?lon={lon}&lat={lat}&date={date}&api_key={api_key}"
+        
+        response = requests.get(url)
+        if response.status_code == 200:
+            # This API returns the image directly, not JSON
+            return response.content
+        else:
+            error_msg = f"Failed to fetch NASA Earth imagery: {response.status_code}"
+            try:
+                error_data = response.json()
+                if 'error' in error_data:
+                    error_msg += f" - {error_data['error']}"
+            except:
+                pass
+            
+            logger.error(error_msg)
+            return None
+    except Exception as e:
+        logger.error(f"Error fetching NASA Earth imagery: {str(e)}")
+        return None
+
 # Process NASA EONET events
 def process_nasa_events(data):
     if 'events' not in data:
