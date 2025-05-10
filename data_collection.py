@@ -164,6 +164,43 @@ def initialize_reference_data():
             
             # Add sample alerts
             for disaster in Disaster.query.filter_by(is_active=True).all():
+                # Define external sources based on disaster type
+                sources_used = []
+                external_references = []
+                
+                if disaster.type.name == "Flood":
+                    sources_used = ["NASA FIRMS satellite data", "Malaysian Meteorological Department rainfall data", "Historical flood patterns"]
+                    external_references = [
+                        "https://www.met.gov.my/",
+                        "https://firms.modaps.eosdis.nasa.gov/",
+                        "https://www.water.gov.my/"
+                    ]
+                elif disaster.type.name == "Earthquake":
+                    sources_used = ["USGS seismic activity reports", "Regional geological surveys", "Historical seismic events database"]
+                    external_references = [
+                        "https://earthquake.usgs.gov/",
+                        "https://www.jmg.gov.my/",
+                        "https://www.emsc-csem.org/"
+                    ]
+                elif disaster.type.name == "Tsunami":
+                    sources_used = ["Pacific Tsunami Warning Center", "Ocean depth sensors data", "Coastal vulnerability analysis"]
+                    external_references = [
+                        "https://ptwc.weather.gov/",
+                        "https://ioc-tsunami.org/",
+                        "https://www.noaa.gov/"
+                    ]
+                elif disaster.type.name == "Forest Fire":
+                    sources_used = ["NASA MODIS fire detection", "Weather pattern analysis", "Vegetation density mapping"]
+                    external_references = [
+                        "https://firms.modaps.eosdis.nasa.gov/",
+                        "https://www.met.gov.my/",
+                        "https://www.forestry.gov.my/"
+                    ]
+                
+                # Format lists as comma-separated strings
+                sources_str = ", ".join(sources_used)
+                references_str = ", ".join(external_references)
+                
                 alert = DisasterAlert(
                     disaster_id=disaster.id,
                     title=f"Alert: {disaster.title}",
@@ -171,7 +208,10 @@ def initialize_reference_data():
                     alert_level=disaster.severity,
                     issued_at=disaster.start_date,
                     expires_at=datetime.utcnow() + timedelta(days=7) if disaster.is_active else None,
-                    is_active=disaster.is_active
+                    is_active=disaster.is_active,
+                    is_test=False,
+                    sources_used=sources_str,
+                    external_references=references_str
                 )
                 db.session.add(alert)
         

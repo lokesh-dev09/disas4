@@ -191,6 +191,50 @@
                     <p class="mb-0">{{ alert.message }}</p>
                 </div>
                 
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h6>Information Sources:</h6>
+                        <div class="card bg-dark">
+                            <div class="card-body">
+                                {% if alert.sources_used %}
+                                <h6 class="card-subtitle mb-2">ML Data Sources</h6>
+                                <p class="card-text">Data used by our AI for this assessment:</p>
+                                <ul class="list-group list-group-flush mb-3">
+                                    {% for source in alert.sources_used.split(',') if source.strip() %}
+                                    <li class="list-group-item bg-transparent">{{ source.strip() }}</li>
+                                    {% else %}
+                                    <li class="list-group-item bg-transparent text-muted">No specific data sources recorded</li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                                
+                                {% if alert.external_references %}
+                                <h6 class="card-subtitle mb-2">External References</h6>
+                                <p class="card-text">Additional information about this event:</p>
+                                <div class="list-group list-group-flush">
+                                    {% set refs = alert.external_references.split(',') %}
+                                    {% for ref in refs if ref.strip() %}
+                                    <a href="{{ ref.strip() }}" target="_blank" class="list-group-item list-group-item-action bg-transparent">
+                                        <i data-feather="external-link" class="feather-sm me-2"></i>
+                                        Reference #{{ loop.index }}
+                                    </a>
+                                    {% else %}
+                                    <div class="list-group-item bg-transparent text-muted">No external references available</div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+                                
+                                {% if not alert.sources_used and not alert.external_references %}
+                                <p class="text-muted mb-0">
+                                    <i data-feather="info" class="feather-sm me-2"></i>
+                                    No additional information sources available for this alert.
+                                </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="row">
                     <div class="col-12">
                         <div id="alert-map-{{ alert.id }}" style="height: 250px;"></div>
