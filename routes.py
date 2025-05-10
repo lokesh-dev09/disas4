@@ -73,8 +73,8 @@ def alerts_page():
     state_id = request.args.get('state', type=int)
     active_only = request.args.get('active_only', type=bool, default=True)
     
-    # Base query
-    query = DisasterAlert.query.join(Disaster)
+    # Base query - exclude test alerts and check if disasters are actually active
+    query = DisasterAlert.query.join(Disaster).filter(DisasterAlert.is_test == False)
     
     # Apply filters
     if disaster_type_id:
@@ -84,10 +84,20 @@ def alerts_page():
         query = query.filter(Disaster.state_id == state_id)
     
     if active_only:
+        # Make sure both the alert is active and the disaster is still active
         query = query.filter(DisasterAlert.is_active == True)
+        query = query.filter(Disaster.is_active == True)
     
     # Order by issued date
     alerts = query.order_by(DisasterAlert.issued_at.desc()).all()
+    
+    # If expired alert has a related disaster that's no longer active, 
+    # and that info isn't reflected in the alert, update it
+    for alert in alerts:
+        if alert.is_active and not alert.disaster.is_active:
+            with app.app_context():
+                alert.is_active = False
+                db.session.commit()
     
     return render_template('alerts.html', 
                            alerts=alerts,

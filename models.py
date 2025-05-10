@@ -95,6 +95,11 @@ class DisasterAlert(db.Model):
     issued_at = db.Column(db.DateTime, default=datetime.utcnow)
     expires_at = db.Column(db.DateTime)
     is_active = db.Column(db.Boolean, default=True)
+    is_test = db.Column(db.Boolean, default=False)  # Flag for test alerts
+    
+    # ML sources and external information
+    sources_used = db.Column(db.Text)  # Comma-separated list of sources used by ML
+    external_references = db.Column(db.Text)  # JSON string of external URLs and references
     
     def __repr__(self):
         return f"<DisasterAlert {self.title}>"
