@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Who We Are - Malaysia Disaster Risk Monitor{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-12">
+            <h1 class="display-4 mb-4">Who We Are</h1>
+            
+            <div class="p-4 bg-dark rounded-3 mb-5">
+                <p class="lead">
+                    Meet the dynamic team behind this transformative project — Isaac Tan, Ethan Chow, Chu Ting Ern, and Beatrise. With a shared commitment to leveraging technology for impactful solutions, this team brings a unique blend of leadership, technical proficiency and creative problem-solving. Isaac, the strategic coordinator, ensures seamless project execution and alignment with the overarching vision. Ethan, a data enthusiast, specializes in data analysis, turning complex datasets into actionable insights. Chu Ting Ern excels in user experience design, crafting intuitive interfaces that enhance user engagement. Beatrise, the communications lead, bridges the gap between technical solutions and stakeholder outreach, amplifying the project's impact through engagement strategies. Together, they form a cohesive unit poised to tackle pressing challenges with innovative solutions.
+                </p>
+            </div>
+            
+            <h2 class="mb-4">Our Team</h2>
+        </div>
+    </div>
+    
+    <!-- Team Members -->
+    <div class="row mb-5">
+        <!-- Isaac Tan -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 bg-dark border-0">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename='images/profile_placeholder.svg') }}" class="img-fluid rounded-start" alt="Isaac Tan - Replace with 'WhatsApp Image 2025-05-10 at 13.48.28.jpeg' when available">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Isaac Tan</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Project Manager, Lead Developer</h6>
+                            <p class="card-text">
+                                As the project manager and lead developer, Isaac coordinates all aspects of the project, ensuring timely delivery and technical excellence.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ethan Chow -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 bg-dark border-0">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename='images/ethan_profile.jpg') }}" class="img-fluid rounded-start" alt="Ethan Chow">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Ethan Chow</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Data Expert, Information Analysis</h6>
+                            <p class="card-text">
+                                Ethan's expertise in data analysis transforms complex disaster data into actionable insights that power our risk assessment models.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chu Ting Ern -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 bg-dark border-0">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename='images/ting_ern_profile.jpg') }}" class="img-fluid rounded-start" alt="Chu Ting Ern">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Chu Ting Ern</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Quality Assurance Lead, Documentation Specialist</h6>
+                            <p class="card-text">
+                                Ting Ern ensures the platform meets quality standards and maintains comprehensive documentation to support ongoing development.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Beatrise -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 bg-dark border-0">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename='images/beatrise_profile.jpg') }}" class="img-fluid rounded-start" alt="Beatrise">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Beatrise</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Public Relations Manager, Advertisement</h6>
+                            <p class="card-text">
+                                Beatrise leads our public relations efforts, strategically communicating our platform's value to stakeholders and the wider community.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Closing Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="p-4 bg-dark rounded-3">
+                <h3 class="mb-3">Our Vision</h3>
+                <p>
+                    These aspiring young learners from SMK Taman Desa are driven by a shared vision of utilizing technology to address pressing challenges, demonstrating a strong commitment to learning, innovation and community impact.
+                </p>
+                <p class="mb-0">
+                    Through future engagements in collaborations with local organizations, NGOs and subject matter experts, this already practical solution can and will be further refined.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

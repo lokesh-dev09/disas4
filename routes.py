@@ -112,6 +112,11 @@ def about_page():
     """About page with information about the project"""
     return render_template('about.html')
 
+@app.route('/who-we-are')
+def who_we_are_page():
+    """Who We Are page with team information"""
+    return render_template('who_we_are.html')
+
 # API endpoints for fetching data for the frontend
 @app.route('/api/disasters')
 def get_disasters():

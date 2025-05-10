@@ -63,6 +63,12 @@
                             <i data-feather="info" class="feather-sm me-1"></i> About
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/who-we-are' %}active{% endif %}" 
+                           href="{{ url_for('who_we_are_page') }}">
+                            <i data-feather="users" class="feather-sm me-1"></i> Who We Are
+                        </a>
+                    </li>
                 </ul>
                 <div class="d-flex">
                     <button id="refresh-data-btn" class="btn btn-outline-light btn-sm me-2">
