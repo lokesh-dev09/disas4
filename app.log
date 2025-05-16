@@ -95,3 +95,11 @@ INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:08:34] "GET /api/disasters HTT
 INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:08:35] "GET /api/risk_assessments HTTP/1.1" 200 -
 INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:08:35] "GET /api/statistics HTTP/1.1" 200 -
 INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:08:35] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:36] "GET / HTTP/1.1" 200 -
+INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "[36mGET /static/css/custom.css HTTP/1.1[0m" 304 -
+INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "[36mGET /static/js/map.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "[36mGET /static/js/charts.js HTTP/1.1[0m" 304 -
+INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "GET /api/disasters HTTP/1.1" 200 -
+INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "GET /api/statistics HTTP/1.1" 200 -
+INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "GET /api/risk_assessments HTTP/1.1" 200 -
