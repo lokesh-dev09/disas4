@@ -9,7 +9,7 @@
         <p class="lead">Real-time monitoring and predictive analysis of natural disasters in Malaysia.</p>
     </div>
     <div class="col-md-4 text-md-end">
-        <div class="badge bg-primary p-2 fs-6">Last Updated: {{ now().strftime('%d %b %Y, %H:%M') }}</div>
+        <div class="badge bg-primary p-2 fs-6" aria-label="Last Updated">Last Updated: {{ now().strftime('%d %b %Y, %H:%M') }}</div>
     </div>
 </div>
 
@@ -20,11 +20,11 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="rounded-circle me-3 p-3 bg-primary bg-opacity-25">
-                        <i data-feather="database" class="text-primary"></i>
+                        <i data-feather="database" class="text-primary" aria-hidden="true"></i>
                     </div>
                     <div>
                         <h5 class="card-title">Total Disasters</h5>
-                        <h2 class="card-value">{{ total_disasters }}</h2>
+                        <h2 class="card-value" aria-label="Total Disasters Count">{{ total_disasters }}</h2>
                     </div>
                 </div>
             </div>
@@ -35,11 +35,11 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="rounded-circle me-3 p-3 bg-danger bg-opacity-25">
-                        <i data-feather="activity" class="text-danger"></i>
+                        <i data-feather="activity" class="text-danger" aria-hidden="true"></i>
                     </div>
                     <div>
                         <h5 class="card-title">Active Disasters</h5>
-                        <h2 class="card-value">{{ active_disasters }}</h2>
+                        <h2 class="card-value" aria-label="Active Disasters Count">{{ active_disasters }}</h2>
                     </div>
                 </div>
             </div>
@@ -50,11 +50,11 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="rounded-circle me-3 p-3 bg-warning bg-opacity-25">
-                        <i data-feather="alert-triangle" class="text-warning"></i>
+                        <i data-feather="alert-triangle" class="text-warning" aria-hidden="true"></i>
                     </div>
                     <div>
                         <h5 class="card-title">Active Alerts</h5>
-                        <h2 class="card-value">{{ alerts }}</h2>
+                        <h2 class="card-value" aria-label="Active Alerts Count">{{ alerts }}</h2>
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-transparent border-0">
                 <h5 class="mb-0">
-                    <i data-feather="pie-chart" class="card-header-icon"></i>
+                    <i data-feather="pie-chart" class="card-header-icon" aria-hidden="true"></i>
                     Disaster Analytics
                 </h5>
             </div>
@@ -76,19 +76,19 @@
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <div class="chart-container">
-                            <canvas id="disasters-by-type-chart"></canvas>
+                            <canvas id="disasters-by-type-chart" aria-label="Disasters by Type Chart"></canvas>
                         </div>
                     </div>
                     <div class="col-md-6 mb-4">
                         <div class="chart-container">
-                            <canvas id="risk-level-chart"></canvas>
+                            <canvas id="risk-level-chart" aria-label="Risk Level Chart"></canvas>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="chart-container">
-                            <canvas id="disasters-by-month-chart"></canvas>
+                            <canvas id="disasters-by-month-chart" aria-label="Disasters by Month Chart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -102,7 +102,7 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-transparent border-0">
                 <h5 class="mb-0">
-                    <i data-feather="clock" class="card-header-icon"></i>
+                    <i data-feather="clock" class="card-header-icon" aria-hidden="true"></i>
                     Recent Disasters
                 </h5>
             </div>
@@ -112,22 +112,15 @@
                     <div class="list-group-item bg-transparent">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-1">{{ disaster.title }}</h6>
-                            <small class="badge risk-{{ disaster.severity }}">
+                            <small class="badge risk-{{ disaster.severity }}" aria-label="Risk Level {{ disaster.severity }}">
                                 Level {{ disaster.severity }}
                             </small>
                         </div>
                         <p class="mb-1 small">{{ disaster.type.name }} in {{ disaster.state.name }}</p>
                         <small class="text-muted">{{ disaster.start_date.strftime('%d %b %Y') }}</small>
                     </div>
-                    {% else %}
-                    <div class="list-group-item bg-transparent">
-                        <p class="mb-0 text-center">No recent disasters recorded.</p>
-                    </div>
                     {% endfor %}
                 </div>
-            </div>
-            <div class="card-footer bg-transparent text-center">
-                <a href="{{ url_for('map_page') }}" class="btn btn-sm btn-outline-primary">View on Map</a>
             </div>
         </div>
 
@@ -135,7 +128,7 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-transparent border-0">
                 <h5 class="mb-0">
-                    <i data-feather="alert-circle" class="card-header-icon"></i>
+                    <i data-feather="alert-circle" class="card-header-icon" aria-hidden="true"></i>
                     High Risk Areas
                 </h5>
             </div>
@@ -145,16 +138,12 @@
                     <div class="list-group-item bg-transparent">
                         <div class="d-flex w-100 justify-content-between">
                             <h6 class="mb-1">{{ area.location_name }}</h6>
-                            <small class="badge risk-{{ area.risk_level }}">
+                            <small class="badge risk-{{ area.risk_level }}" aria-label="Risk Level {{ area.risk_level }}">
                                 Level {{ area.risk_level }}
                             </small>
                         </div>
                         <p class="mb-1 small">{{ DisasterType.query.get(area.disaster_type_id).name }} risk in {{ area.state.name }}</p>
                         <small class="text-muted">Last assessed: {{ area.last_assessed.strftime('%d %b %Y') }}</small>
-                    </div>
-                    {% else %}
-                    <div class="list-group-item bg-transparent">
-                        <p class="mb-0 text-center">No high risk areas identified.</p>
                     </div>
                     {% endfor %}
                 </div>

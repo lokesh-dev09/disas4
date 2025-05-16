@@ -279,7 +279,7 @@ def fetch_nasa_earthdata():
         # NASA EONET (Earth Observatory Natural Event Tracker)
         url = f"https://eonet.gsfc.nasa.gov/api/v3/events?api_key={api_key}&status=open&category=wildfires,floods,earthquakes,tsunamis"
         
-        response = requests.get(url)
+        response = requests.get(url, timeout=10)  # Added timeout to prevent hanging
         if response.status_code == 200:
             data = response.json()
             
