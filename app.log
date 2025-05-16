@@ -103,3 +103,46 @@ INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "[36mGET /static/js/ch
 INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "GET /api/disasters HTTP/1.1" 200 -
 INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "GET /api/statistics HTTP/1.1" 200 -
 INFO:werkzeug:110.159.103.135 - - [16/May/2025 14:29:37] "GET /api/risk_assessments HTTP/1.1" 200 -
+INFO:werkzeug: * Detected change in '/workspaces/disas4/data_collection.py', reloading
+INFO:werkzeug: * Restarting with stat
+DEBUG:tzlocal:/etc/timezone found, contents:
+ Etc/UTC
+
+DEBUG:tzlocal:/etc/localtime found
+DEBUG:tzlocal:2 found:
+ {'/etc/timezone': 'Etc/UTC', '/etc/localtime is a symlink to': 'Etc/UTC'}
+DEBUG:htmldate.validators:minimum date setting: 1995-01-01 00:00:00
+INFO:data_collection:Reference data initialized
+INFO:data_collection:Starting data collection process
+INFO:data_collection:Reference data initialized
+INFO:data_collection:Fetching data from NASA Earthdata
+DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): eonet.gsfc.nasa.gov:443
+DEBUG:urllib3.connectionpool:https://eonet.gsfc.nasa.gov:443 "GET /api/v3/events?api_key=DEMO_KEY&status=open&category=wildfires,floods,earthquakes,tsunamis HTTP/1.1" 500 None
+ERROR:data_collection:Failed to fetch NASA data: 500
+INFO:data_collection:Fetching data from EM-DAT
+INFO:data_collection:Processed EM-DAT data
+INFO:data_collection:Fetching data from WorldRiskReport
+INFO:data_collection:Processed WorldRiskReport data
+INFO:data_collection:Data collection complete - NASA: False, EM-DAT: True, WorldRiskReport: True
+INFO:ml_model:Training ML model
+INFO:ml_model:Preprocessing data for ML model
+WARNING:ml_model:Not enough data for reliable model training
+WARNING:ml_model:Using simplified model due to insufficient data
+INFO:ml_model:Creating simplified risk model
+INFO:ml_model:Predicting risk areas
+INFO:ml_model:Preprocessing data for ML model
+WARNING:ml_model:Not enough data for reliable model training
+/home/codespace/.local/lib/python3.12/site-packages/sklearn/utils/validation.py:2732: UserWarning: X has feature names, but RandomForestClassifier was fitted without feature names
+  warnings.warn(
+ERROR:ml_model:Error predicting risk areas: The DType <class 'numpy.dtypes.DateTime64DType'> could not be promoted by <class 'numpy.dtypes.Float64DType'>. This means that no common DType exists for the given inputs. For example they cannot be stored in a single array unless the dtype is `object`. The full list of DTypes is: (<class 'numpy.dtypes.Int64DType'>, <class 'numpy.dtypes.Int64DType'>, <class 'numpy.dtypes.Float64DType'>, <class 'numpy.dtypes.Float64DType'>, <class 'numpy.dtypes.Int64DType'>, <class 'numpy.dtypes.DateTime64DType'>, <class 'numpy.dtypes.BoolDType'>)
+INFO:data_collection:Risk assessments generated
+INFO:data_collection:Risk assessments updated
+INFO:apscheduler.scheduler:Adding job tentatively -- it will be properly scheduled when the scheduler starts
+INFO:data_collection:Scheduled data collection every 6 hours
+INFO:apscheduler.scheduler:Added job "collect_all_data" to job store "default"
+INFO:apscheduler.scheduler:Scheduler started
+DEBUG:apscheduler.scheduler:Looking for jobs to run
+INFO:app:Started background data collection scheduler
+DEBUG:apscheduler.scheduler:Next wakeup is due at 2025-05-16 20:41:14.887360+00:00 (in 21599.999083 seconds)
+WARNING:werkzeug: * Debugger is active!
+INFO:werkzeug: * Debugger PIN: 979-709-016
